@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .order-table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #e7663c;
+            color: white;
+        }
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #c6552e;
+        }
+        .cancel-btn {
+            background: red;
+        }
+        .cancel-btn:hover {
+            background: darkred;
+        }
+        .filter-bar {
+            margin: 20px auto;
+            width: 75%;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .filter-bar input, .filter-bar select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📜 Order History</h1>
+</div>
+
+<div class="filter-bar">
+    <label for="search">🔍 Search:</label>
+    <input type="text" id="search" placeholder="Enter pickup, drop, or price" onkeyup="filterOrders()">
+    
+    <label for="status">📌 Status:</label>
+    <select id="status" onchange="filterOrders()">
+        <option value="">All</option>
+        <option value="Completed">Completed</option>
+        <option value="Ongoing">Ongoing</option>
+    </select>
+</div>
+
+<table class="order-table">
+    <thead>
+        <tr>
+            <th>📅 Date</th>
+            <th>📍 Pickup</th>
+            <th>📍 Drop</th>
+            <th>💰 Price</th>
+            <th>📌 Status</th>
+            <th>🛠 Actions</th>
+        </tr>
+    </thead>
+    <tbody id="orderList">
+        <!-- Orders will be inserted dynamically -->
+    </tbody>
+</table>
+
+<script>
+    // Sample order data
+    let orders = [
+        { date: "2025-03-01", pickup: "Delhi", drop: "Chandigarh", price: "₹30000", status: "Completed" },
+        { date: "2025-03-02", pickup: "Mumbai", drop: "Pune", price: "₹15070", status: "Ongoing" },
+        { date: "2025-03-03", pickup: "Kolkata", drop: "Delhi", price: "₹75030", status: "Completed" },
+        { date: "2025-03-04", pickup: "Bangalore", drop: "Hyderabad", price: "₹40400", status: "Ongoing" }
+    ];
+
+    function loadOrders() {
+        let orderList = document.getElementById("orderList");
+        orderList.innerHTML = ""; // Clear table before inserting
+        orders.forEach((order, index) => {
+            let row = `
+                <tr>
+                    <td>${order.date}</td>
+                    <td>${order.pickup}</td>
+                    <td>${order.drop}</td>
+                    <td>${order.price}</td>
+                    <td>${order.status}</td>
+                    <td>
+                        <button class="btn" onclick="downloadInvoice(${index})">📄 Invoice</button>
+                        ${order.status === "Ongoing" ? `<button class="btn" onclick="trackOrder(${index})">📍 Track</button>` : ""}
+                        ${order.status === "Ongoing" ? `<button class="btn cancel-btn" onclick="cancelBooking(${index})">❌ Cancel</button>` : ""}
+                    </td>
+                </tr>
+            `;
+            orderList.innerHTML += row;
+        });
+    }
+
+    function filterOrders() {
+        let searchValue = document.getElementById("search").value.toLowerCase();
+        let statusValue = document.getElementById("status").value;
+        let orderList = document.getElementById("orderList");
+
+        orderList.innerHTML = ""; // Clear existing rows
+
+        orders.forEach((order, index) => {
+            let matchesSearch = order.pickup.toLowerCase().includes(searchValue) || order.drop.toLowerCase().includes(searchValue) || order.price.toLowerCase().includes(searchValue);
+            let matchesStatus = statusValue === "" || order.status === statusValue;
+
+            if (matchesSearch && matchesStatus) {
+                let row = `
+                    <tr>
+                        <td>${order.date}</td>
+                        <td>${order.pickup}</td>
+                        <td>${order.drop}</td>
+                        <td>${order.price}</td>
+                        <td>${order.status}</td>
+                        <td>
+                            <button class="btn" onclick="downloadInvoice(${index})">📄 Invoice</button>
+                            ${order.status === "Ongoing" ? `<button class="btn" onclick="trackOrder(${index})">📍 Track</button>` : ""}
+                            ${order.status === "Ongoing" ? `<button class="btn cancel-btn" onclick="cancelBooking(${index})">❌ Cancel</button>` : ""}
+                        </td>
+                    </tr>
+                `;
+                orderList.innerHTML += row;
+            }
+        });
+    }
+
+    function downloadInvoice(index) {
+        let order = orders[index];
+        alert(`📄 Invoice downloaded for: ${order.pickup} → ${order.drop}, Amount: ${order.price}`);
+    }
+
+    function cancelBooking(index) {
+        if (confirm("❌ Are you sure you want to cancel this booking?")) {
+            orders[index].status = "Cancelled";
+            alert("🚫 Booking Cancelled Successfully!");
+            loadOrders();
+        }
+    }
+
+    function trackOrder(index) {
+        window.location.href = 'live-tracking.html';
+    }
+
+    window.onload = loadOrders;
+</script>
+
+</body>
+</html>

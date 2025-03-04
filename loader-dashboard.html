@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loader Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        .header {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 80%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .profile-btn:hover {
+            background: #c6552e;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .earnings {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px; /* Sets a max width */
+            height: 300px; /* Fixes the height */
+            margin: auto;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .job-list, .job-history, .upcoming-jobs {
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #c6552e;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e7663c;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .floating-btn:hover {
+            background: #c6552e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📦 Loader Dashboard</h1>
+    <a href="profile-verification.html" class="profile-btn">👤 Profile</a>
+    <a href="rating-reviews.html" class="profile-btn">⭐ Ratings & Reviews</a> <!-- New button added here -->
+</div>
+
+<div class="container">
+
+    <!-- 🚀 Earnings Summary -->
+    <div class="earnings">
+        <h2>💰 Earnings Summary</h2>
+        <p><strong>Today:</strong> ₹<span id="todayEarnings">7,500</span></p>
+        <p><strong>This Week:</strong> ₹<span id="weeklyEarnings">30,000</span></p>
+        <p><strong>This Month:</strong> ₹<span id="monthlyEarnings">85,000</span></p>
+    </div>
+
+    <!-- 📊 Earnings Graph -->
+    <div class="chart-container">
+        <h2>📊 Earnings Trend</h2>
+        <canvas id="earningsChart"></canvas>
+    </div>
+
+    <!-- ✅ Job History -->
+    <div class="section">
+        <h2>✅ Completed Jobs</h2>
+        <div class="job-history">
+            <span><strong>Pickup:</strong> Lucknow | <strong>Drop:</strong> Kanpur</span>
+            <span><strong>Fare:</strong> ₹1,800 | <strong>Date:</strong> 2nd March</span>
+            <span>✅ Completed</span>
+        </div>
+        <div class="job-history">
+            <span><strong>Pickup:</strong> Chennai | <strong>Drop:</strong> Hyderabad</span>
+            <span><strong>Fare:</strong> ₹4,200 | <strong>Date:</strong> 1st March</span>
+            <span>✅ Completed</span>
+        </div>
+    </div>
+
+    <!-- ⏳ Upcoming Jobs -->
+    <div class="section">
+        <h2>⏳ Upcoming Jobs</h2>
+        <div class="upcoming-jobs">
+            <span><strong>Pickup:</strong> Bhopal | <strong>Drop:</strong> Indore</span>
+            <span><strong>Fare:</strong> ₹2,200 | <strong>Date:</strong> 5th March</span>
+            <span>📅 Scheduled</span>
+        </div>
+        <div class="upcoming-jobs">
+            <span><strong>Pickup:</strong> Kolkata | <strong>Drop:</strong> Patna</span>
+            <span><strong>Fare:</strong> ₹3,500 | <strong>Date:</strong> 6th March</span>
+            <span>📅 Scheduled</span>
+        </div>
+    </div>
+
+</div>
+
+<a href="job-listings.html" class="floating-btn">📋 Job Listing</a>
+
+<script>
+    // Dummy earnings data for the graph
+    let earningsData = [5000, 7500, 6800, 9000, 7200, 8500, 7800]; // Earnings for the last 7 days
+    let days = ["Feb 27", "Feb 28", "Feb 29", "Mar 1", "Mar 2", "Mar 3", "Mar 4"];
+
+    // Initialize Chart.js graph
+    let ctx = document.getElementById('earningsChart').getContext('2d');
+    let earningsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: days,
+            datasets: [{
+                label: "Earnings (₹)",
+                data: earningsData,
+                borderColor: "#e7663c",
+                backgroundColor: "rgba(231, 102, 60, 0.2)",
+                borderWidth: 2,
+                pointBackgroundColor: "#c6552e",
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allows height adjustment
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

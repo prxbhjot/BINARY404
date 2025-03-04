@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Tracking (Free Version)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        .header {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #map {
+            width: 80%;
+            height: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .info-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            width: 75%;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .info-box h3 {
+            color: #e7663c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📍 Live Tracking (OpenStreetMap)</h1>
+</div>
+
+<!-- OpenStreetMap Container -->
+<div id="map"></div>
+
+<!-- Tracking Information -->
+<div class="info-box">
+    <h3>🚚 Loader Information</h3>
+    <p><strong>Current Location:</strong> <span id="location">Fetching...</span></p>
+    <p><strong>Speed:</strong> <span id="speed">Fetching...</span></p>
+    <p><strong>Estimated Arrival:</strong> <span id="eta">Calculating...</span></p>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    let map = L.map('map').setView([28.7041, 77.1025], 14); // Default (Delhi)
+    
+    // Load OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker = L.marker([28.7041, 77.1025]).addTo(map)
+        .bindPopup("Loader Location")
+        .openPopup();
+
+    // Predefined path (example coordinates)
+    let path = [
+        [28.7041, 77.1025],
+        [28.7050, 77.1030],
+        [28.7060, 77.1040],
+        [28.7070, 77.1050],
+        [28.7080, 77.1060],
+        [28.7090, 77.1070],
+        [28.7100, 77.1080]
+    ];
+
+    let currentIndex = 0;
+
+    function updateLoaderLocation() {
+        setInterval(() => {
+            if (currentIndex < path.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop back to the start
+            }
+
+            let lat = path[currentIndex][0];
+            let lng = path[currentIndex][1];
+
+            marker.setLatLng([lat, lng]);
+            map.setView([lat, lng], 14);
+
+            document.getElementById("location").innerText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+            document.getElementById("speed").innerText = (Math.random() * 10 + 30).toFixed(2) + " km/h"; // Speed between 30-40 km/h
+            document.getElementById("eta").innerText = (Math.random() * 20 + 10).toFixed(0) + " mins"; // ETA between 10-30 mins
+        }, 5000);
+    }
+
+    updateLoaderLocation();
+</script>
+
+</body>
+</html>

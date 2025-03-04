@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ratings & Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar {
+            background: #e7663c;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .review-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .review-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .review-content {
+            flex: 1;
+        }
+
+        .stars {
+            color: gold;
+        }
+
+        .add-review {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #c6552e;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <div class="navbar">
+        <h2>Ratings & Reviews</h2>
+        <button class="btn" onclick="window.location.href='profile-verification.html'">Profile</button>
+    </div>
+
+    <div class="container">
+
+        <!-- Review 1 -->
+        <div class="review-card">
+            <img src="https://via.placeholder.com/50" alt="User">
+            <div class="review-content">
+                <h4>Rajesh Kumar</h4>
+                <p class="stars">⭐⭐⭐⭐⭐</p>
+                <p>Excellent service! On-time and very professional.</p>
+            </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+            <img src="https://via.placeholder.com/50" alt="User">
+            <div class="review-content">
+                <h4>Simran Kaur</h4>
+                <p class="stars">⭐⭐⭐⭐</p>
+                <p>Very helpful and cooperative. Will book again!</p>
+            </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+            <img src="https://via.placeholder.com/50" alt="User">
+            <div class="review-content">
+                <h4>Aman Sharma</h4>
+                <p class="stars">⭐⭐⭐</p>
+                <p>Good service, but there was a slight delay.</p>
+            </div>
+        </div>
+
+        <!-- Add New Review Section -->
+        <div class="add-review">
+            <h3>Add a Review</h3>
+            <input type="text" id="name" placeholder="Your Name" required><br><br>
+            <textarea id="review" placeholder="Your Review" required></textarea><br><br>
+            <label for="rating">Rating:</label>
+            <select id="rating">
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5" selected>5 Stars</option>
+            </select><br><br>
+            <button class="btn" onclick="addReview()">Submit Review</button>
+    </div>
+
+    <script>
+        function addReview() {
+            let name = document.getElementById("name").value;
+            let review = document.getElementById("review").value;
+            let rating = document.getElementById("rating").value;
+            let stars = "⭐".repeat(rating);
+
+            if (name && review) {
+                let newReview = document.createElement("div");
+                newReview.classList.add("review-card");
+                newReview.innerHTML = `
+                    <img src="https://via.placeholder.com/50" alt="User">
+                    <div class="review-content">
+                        <h4>${name}</h4>
+                        <p class="stars">${stars}</p>
+                        <p>${review}</p>
+                    </div>
+                `;
+
+                // Add new review to the page
+                document.querySelector(".container").appendChild(newReview);
+
+                // Clear input fields
+                document.getElementById("name").value = "";
+                document.getElementById("review").value = "";
+                document.getElementById("rating").value = "5";
+
+                alert("Thank you for your feedback!");
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+
+</body>
+</html>

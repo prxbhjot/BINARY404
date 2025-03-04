@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Tizan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #cbe5ff; /* Light background color */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .dashboard {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dashboard h2 {
+            color: #e7663c;
+        }
+        .dashboard img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            border: none;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #c6552e;
+            transform: scale(1.05);
+        }
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        .footer-link:hover {
+            color: #ffcc00;
+        }
+        .stats, .features, .notifications, .success-stories, .info-box {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .stats div, .features div, .success-stories div {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .stats div:hover, .features div:hover, .success-stories div:hover {
+            transform: scale(1.05);
+        }
+        .stats h3, .features h3, .success-stories h3 {
+            color: #e7663c;
+        }
+        .info-box {
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            transition: transform 0.3s ease-in-out;
+        }
+        .info-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            width: 80%; /* Increased width */
+            height: 80%; /* Increased height */
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: left;
+            overflow-y: auto; /* Add scroll if content overflows */
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .popup label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        .popup input, .popup select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .popup button {
+            background: #e7663c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        .popup button:hover {
+            background: #c6552e;
+        }
+        .close-btn {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+        .confirmation {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            width: 75%; /* Match the popup width */
+            margin: 20px auto;
+            text-align: center;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: scale(0.8); /* Start smaller */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Floating Customer Support Button */
+        .support-btn, .book-now-btn {
+            position: fixed;
+            bottom: 20px;
+            background: #e7663c;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .support-btn {
+            right: 20px;
+        }
+        .book-now-btn {
+            right: 100px;
+        }
+        .support-btn:hover, .book-now-btn:hover {
+            background: #c6552e;
+        }
+
+        /* QR Code and Timer Styles */
+        #qrCode {
+            max-width: 200px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        #timer {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="dashboard fade-in">
+            <img src="logo.png" alt="Dashboard Image">
+            <h2>📌 Quick Actions</h2>
+            <button class="btn"  onclick="window.location.href='live-tracking.html'">📦 Track latest Bookings</button>
+            <button class="btn" onclick="window.location.href='order-history.html'">🚚 Your Orders</button>
+            <button class="btn" onclick="openPopup()">📦 Book Now</button>
+        </div>
+        <div class="header">
+            <h2>Welcome to Your Dashboard, 🚀</h2>
+            <p>Manage your bookings, payments, and track your shipments with ease.</p>
+        </div>
+
+        <div class="confirmation fade-in" id="confirmationBox">
+        </div>
+
+        <div class="stats fade-in">
+            <h2>📊 Dashboard Insights</h2>
+            <div>
+                <h3>📦 250+ Orders</h3>
+                <p>Delivered successfully this month!</p>
+            </div>
+            <div>
+                <h3>🚚 150+ Loaders</h3>
+                <p>Active on our platform.</p>
+            </div>
+            <div>
+                <h3>⭐ 4.9/5 Ratings</h3>
+                <p>From 5,000+ happy customers.</p>
+            </div>
+        </div>
+
+        <div class="features fade-in">
+            <h2>🚀 Featured Services</h2>
+            <div>
+                <h3>🏠 Home Shifting</h3>
+                <p>Move your household items safely & securely.</p>
+            </div>
+            <div>
+                <h3>📦 Cargo Transport</h3>
+                <p>Deliver business shipments with ease.</p>
+            </div>
+            <div>
+                <h3>🛵 Bike Transport</h3>
+                <p>Need to move your vehicle? We’ve got you covered.</p>
+            </div>
+        </div>
+
+        <div class="notifications fade-in">
+            <h2>📢 Recent Notifications</h2>
+            <p>⚡ Your shipment is arriving in 3 hours!</p>
+            <p>🚛 A new loader is available in your area.</p>
+            <p>🎉 Special discount: Get 10% off on your next booking!</p>
+        </div>
+
+        <div class="info-box fade-in">
+            <h2>📖 How It Works</h2>
+            <p>1️⃣ **Sign Up:** Create an account in just a few clicks.</p>
+            <p>2️⃣ **Find Loaders:** Compare prices & availability.</p>
+            <p>3️⃣ **Book & Track:** Make secure payments and track your shipment in real-time.</p>
+        </div>
+
+        <div class="success-stories fade-in">
+            <h2>🎯 Customer Success Stories</h2>
+            <div>
+                <h3>🚛 Ramesh Kumar</h3>
+                <p>“Tizan made my relocation process stress-free! Highly recommended.”</p>
+            </div>
+            <div>
+                <h3>📦 Priya Sharma</h3>
+                <p>“The tracking system is super easy to use!”</p>
+            </div>
+            <div>
+                <h3>🏠 Manpreet Singh</h3>
+                <p>“Affordable pricing & professional loaders. 10/10 service!”</p>
+            </div>
+        </div>
+
+        <div class="info-box fade-in">
+            <h2>🎥 Watch Our Demo Video</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="popup" id="bookingPopup">
+            <button class="close-btn" onclick="closePopup()">X</button>
+            <h2>📅 Book a Shipment</h2>
+
+            <label for="pickup">📍 Pickup Location:</label>
+            <select id="pickup"></select>
+
+            <label for="drop">📍 Drop Location:</label>
+            <select id="drop"></select>
+
+            <label for="weight">⚖️ Weight (kg):</label>
+            <input type="number" id="weight" placeholder="Enter weight in kg" required>
+
+            <label for="date">📅 Pickup Date:</label>
+            <input type="date" id="date" required>
+
+            <label for="time">⏰ Pickup Time:</label>
+            <input type="time" id="time" required>
+
+            <label for="price">💰 Estimated Price:</label>
+            <input type="text" id="price" disabled>
+
+            <button onclick="calculatePrice()">💰 Calculate Price</button>
+            <button onclick="confirmBooking()">🚀 Confirm Booking</button>
+        </div>
+
+        <div class="popup" id="driverPopup">
+            <button class="close-btn" onclick="closeDriverPopup()">X</button>
+            <h2>🚚 Select a Driver</h2>
+            <div id="driverList"></div>
+        </div>
+
+        <div class="popup" id="paymentPopup">
+            <button class="close-btn" onclick="closePaymentPopup()">X</button>
+            <h2>💳 Payment and Billing</h2>
+            <div id="paymentOptions">
+                <label for="paymentMethod">Select Payment Method:</label>
+                <select id="paymentMethod" onchange="showPaymentDetails()">
+                    <option value="cod">Cash on Delivery (COD)</option>
+                    <option value="online">Online Payment</option>
+                </select>
+            </div>
+
+            <div id="onlinePaymentDetails" style="display:none;">
+                <img id="qrCode" src="qr-code.png" alt="QR Code">
+                <div id="timer">30</div>
+                <p>Scan the QR code to make the payment. This window will automatically close after the timer runs out.</p>
+            </div>
+            <button onclick="confirmPayment()">💳 Confirm Payment</button>
+        </div>
+
+    </div>
+
+    <a href="customer-support.html" class="support-btn">💬 Customer Support</a>
+    <a class="book-now-btn" onclick="openPopup()">📦 Book Now</a>
+
+    <script>
+        const cities = [
+            "Delhi", "Mumbai", "Kolkata", "Chennai", "Bangalore", "Hyderabad", "Ahmedabad", "Pune", "Jaipur", "Lucknow",
+            "Patna", "Indore", "Bhopal", "Chandigarh", "Amritsar", "Ludhiana", "Dehradun", "Shimla", "Srinagar", "Jammu",
+            "Agra", "Kanpur", "Varanasi", "Meerut", "Nagpur", "Nashik", "Surat", "Vadodara", "Ranchi", "Jamshedpur",
+            "Raipur", "Bhubaneswar", "Visakhapatnam", "Vijayawada", "Guwahati", "Gangtok", "Aizawl", "Imphal", "Shillong",
+            "Itanagar", "Kohima", "Panaji", "Thiruvananthapuram", "Kochi", "Madurai", "Coimbatore", "Tiruchirapalli",
+            "Mysore", "Hubli", "Dharwad", "Gwalior", "Ujjain", "Bilaspur", "Jabalpur", "Ajmer", "Jodhpur", "Udaipur",
+            "Bikaner", "Rajkot", "Jamnagar", "Bhavnagar", "Porbandar", "Moradabad", "Aligarh", "Gorakhpur", "Bareilly",
+            "Ghaziabad", "Faridabad", "Noida", "Gurgaon", "Rohtak", "Panipat", "Hisar", "Karnal", "Ambala", "Haridwar",
+            "Rishikesh", "Saharanpur", "Muzaffarnagar", "Mathura", "Firozabad", "Sultanpur", "Faizabad", "Barabanki",
+            "Gonda", "Bahraich", "Sitapur", "Etawah", "Etah", "Ballia", "Farrukhabad", "Hardoi", "Shahjahanpur", "Unnao",
+            "Basti", "Deoria", "Mau", "Mirzapur", "Chandauli", "Sonbhadra", "Lakhimpur", "Pilibhit"
+        ];
+
+        const cityDistances = {};
+        for (let i = 0; i < cities.length; i++) {
+            cityDistances[cities[i]] = {};
+            for (let j = 0; j < cities.length; j++) {
+                cityDistances[cities[i]][cities[j]] = Math.floor(Math.random() * 2000) + 50; // Random distance between 50-2000 km
+            }
+        }
+
+        const driverNames = [
+            "Ramesh Kumar", "Suresh Singh", "Amit Sharma", "Rajesh Verma", "Vijay Patel", "Sunil Yadav", "Anil Gupta", "Pankaj Mehta", "Ravi Joshi", "Manoj Thakur"
+        ];
+
+        function populateCityDropdowns() {
+            let pickupDropdown = document.getElementById("pickup");
+            let dropDropdown = document.getElementById("drop");
+
+            cities.forEach(city => {
+                let option1 = document.createElement("option");
+                let option2 = document.createElement("option");
+                option1.value = option2.value = city;
+                option1.text = option2.text = city;
+                pickupDropdown.appendChild(option1);
+                dropDropdown.appendChild(option2);
+            });
+        }
+
+        function calculatePrice() {
+            let pickup = document.getElementById("pickup").value;
+            let drop = document.getElementById("drop").value;
+            let weight = parseFloat(document.getElementById("weight").value) || 0;
+
+            let distance = cityDistances[pickup][drop];
+            let finalPrice = 200 + (10 * distance) + (2 * weight);
+            document.getElementById("price").value = "₹" + finalPrice;
+        }
+
+        function openPopup() {
+            document.getElementById("bookingPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("bookingPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function openDriverPopup() {
+            document.getElementById("driverPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeDriverPopup() {
+            document.getElementById("driverPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function openPaymentPopup() {
+            document.getElementById("paymentPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closePaymentPopup() {
+            document.getElementById("paymentPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function confirmBooking() {
+            document.getElementById("confirmationBox").style.display = "block";
+            document.getElementById("confirmationBox").innerHTML = `
+                <h2>✅ Booking Confirmed!</h2>
+                <p>Your shipment is scheduled. You will receive tracking details soon. 🎉</p>
+            `;
+            closePopup();
+            setTimeout(openDriverPopup, 2000); // Open driver selection popup after 2 seconds
+            populateDriverList();
+        }
+
+        function populateDriverList() {
+            let driverList = document.getElementById("driverList");
+            driverList.innerHTML = ""; // Clear existing content
+
+            driverNames.forEach(name => {
+                let price = document.getElementById("price").value;
+                let rating = (Math.random() * 2 + 3).toFixed(1); // Random rating between 3.0 and 5.0
+
+                let driverDiv = document.createElement("div");
+                driverDiv.className = "driver";
+                driverDiv.style.padding = "10px";
+                driverDiv.style.margin = "10px 0";
+                driverDiv.style.border = "1px solid #ccc";
+                driverDiv.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>Rating: ${rating}</p>
+                    <p>Price: ${price}</p>
+                    <button onclick="selectDriver('${name}')">Select Driver</button>
+                `;
+                driverList.appendChild(driverDiv);
+            });
+        }
+
+        function selectDriver(driverName) {
+            closeDriverPopup();
+            openPaymentPopup();
+        }
+
+        function showPaymentDetails() {
+            let paymentMethod = document.getElementById("paymentMethod").value;
+            let onlinePaymentDetails = document.getElementById("onlinePaymentDetails");
+
+            if (paymentMethod === "online") {
+                onlinePaymentDetails.style.display = "block";
+                startTimer();
+            } else {
+                onlinePaymentDetails.style.display = "none";
+            }
+        }
+
+        function confirmPayment() {
+            let paymentMethod = document.getElementById("paymentMethod").value;
+            if (paymentMethod === "cod") {
+                document.getElementById("confirmationBox").style.display = "block";
+                document.getElementById("confirmationBox").innerHTML = `
+                    <h2>✅ Booking Confirmed!</h2>
+                    <p>Your shipment is scheduled. You will receive tracking details soon. 🎉</p>
+                    <p>Payment will be collected upon delivery.</p>
+                `;
+            } else if (paymentMethod === "online") {
+                document.getElementById("confirmationBox").style.display = "block";
+                document.getElementById("confirmationBox").innerHTML = `
+                    <h2>✅ Payment Successful!</h2>
+                    <p>Your booking is confirmed and payment has been received. 🎉</p>
+                `;
+            }
+            closePaymentPopup();
+        }
+
+        function startTimer() {
+            let timerElement = document.getElementById("timer");
+            let timeLeft = 30;
+
+            timerElement.innerText = timeLeft;
+
+            let timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    closePaymentPopup();
+                    alert("Payment timed out. Please try again.");
+                }
+            }, 1000);
+        }
+
+        function fadeInElements() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                element.classList.add('visible');
+            });
+        }
+
+        window.onload = () => {
+            fadeInElements();
+            populateCityDropdowns();
+        };
+    </script>
+
+</body>
+</html>

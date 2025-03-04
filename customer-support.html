@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support - 24/7 Help Desk</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        .header {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 75%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            width: 75%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .faq, .complaint-form {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .faq h3, .complaint-form h3 {
+            color: #e7663c;
+        }
+        .faq-item {
+            background: #f1f1f1;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+        .faq-item:hover {
+            background: #ddd;
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            background: white;
+            border-left: 5px solid #e7663c;
+            margin-top: 5px;
+        }
+        form {
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+        }
+        .btn:hover {
+            background: #c6552e;
+            transform: scale(1.05);
+        }
+        .ticket-box {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e7663c;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📞 24/7 Customer Support</h1>
+</div>
+
+<div class="container">
+    <!-- FAQ Section -->
+    <div class="faq">
+        <h3>❓ Frequently Asked Questions</h3>
+        <div class="faq-item" onclick="toggleFAQ('faq1')">
+            <strong>How do I track my order?</strong>
+            <div class="faq-answer" id="faq1">You can track your order in the 'Live Tracking' section using your order ID.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ('faq2')">
+            <strong>What if my loader is delayed?</strong>
+            <div class="faq-answer" id="faq2">Please contact our 24/7 help desk, and we will assist you with an update.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFAQ('faq3')">
+            <strong>How do I cancel a booking?</strong>
+            <div class="faq-answer" id="faq3">Go to 'Order History', select your booking, and click 'Cancel'. Refund policies apply.</div>
+        </div>
+    </div>
+
+    <!-- Complaint Form -->
+    <div class="complaint-form">
+        <h3>📝 Submit a Complaint</h3>
+        <form id="complaintForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="issue">Issue Type:</label>
+            <select id="issue">
+                <option>Delayed Delivery</option>
+                <option>Damaged Goods</option>
+                <option>Wrong Address</option>
+                <option>Other</option>
+            </select>
+
+            <label for="details">Details:</label>
+            <textarea id="details" rows="4" required></textarea>
+
+            <button type="button" class="btn" onclick="submitComplaint()">Submit Complaint</button>
+        </form>
+    </div>
+
+    <!-- Ticket Confirmation -->
+    <div class="ticket-box" id="ticketBox">
+        🎫 <strong>Complaint Registered!</strong><br>
+        Your Ticket ID: <span id="ticketID"></span><br>
+        Our team will reach out to you soon.
+    </div>
+</div>
+
+<!-- Live Chat Button -->
+<div class="chat-button" onclick="openChat()">💬 Live Chat</div>
+
+<script>
+    function toggleFAQ(id) {
+        var answer = document.getElementById(id);
+        if (answer.style.display === "none" || answer.style.display === "") {
+            answer.style.display = "block";
+        } else {
+            answer.style.display = "none";
+        }
+    }
+
+    function submitComplaint() {
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let issue = document.getElementById("issue").value;
+        let details = document.getElementById("details").value;
+
+        if (name === "" || email === "" || details === "") {
+            alert("⚠️ Please fill out all fields!");
+            return;
+        }
+
+        let ticketID = "TCKT" + Math.floor(Math.random() * 1000000);
+        document.getElementById("ticketID").innerText = ticketID;
+        document.getElementById("ticketBox").style.display = "block";
+
+        document.getElementById("complaintForm").reset();
+    }
+
+    function openChat() {
+        alert("🔧 Live Chat is coming soon! You can email support@tizan.com.");
+    }
+</script>
+
+</body>
+</html>

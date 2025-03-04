@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cbe5ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar {
+            background: #e7663c;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .btn {
+            background: #e7663c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #c6552e;
+        }
+
+        input[type="file"], input[type="password"], select {
+            display: block;
+            margin: 10px auto;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 20px auto;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <div class="navbar">
+        <h2>Profile & Verification</h2>
+    </div>
+
+    <div class="container">
+
+        <!-- Profile Section -->
+        <div class="box">
+            <img src="profile-pic.jpg" alt="Profile Picture" class="profile-pic">
+            <h3>John Doe</h3>
+            <p>Email: johndoe@example.com</p>
+            <p>Phone: +91 9876543210</p>
+            <button class="btn" onclick="editProfile()">Edit Profile</button>
+        </div>
+
+        <!-- Document Upload Section -->
+        <div class="box">
+            <h3>Upload Verification Documents</h3>
+            <p>Upload Aadhaar Card, PAN Card, or Driving License for verification.</p>
+
+            <label for="aadhaar">Aadhaar Card:</label>
+            <input type="file" id="aadhaar" accept=".jpg, .png, .pdf">
+
+            <label for="pan">PAN Card:</label>
+            <input type="file" id="pan" accept=".jpg, .png, .pdf">
+
+            <label for="license">Driving License:</label>
+            <input type="file" id="license" accept=".jpg, .png, .pdf">
+
+            <button class="btn" onclick="submitVerification()">Submit for Verification</button>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="box">
+            <h3>Account Settings</h3>
+            <label for="new-password">Change Password:</label>
+            <input type="password" id="new-password" placeholder="Enter new password">
+            <button class="btn" onclick="changePassword()">Update Password</button>
+
+            <label for="notifications">Enable Notifications:</label>
+            <input type="checkbox" id="notifications" checked>
+
+            <label for="language">Preferred Language:</label>
+            <select id="language">
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+                <option value="punjabi">Punjabi</option>
+            </select>
+
+            <button class="btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message">
+        ✅ Your documents have been submitted for verification!
+    </div>
+
+    <script>
+        function submitVerification() {
+            document.getElementById("success-message").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("success-message").style.display = "none";
+            }, 5000);
+        }
+
+        function editProfile() {
+            alert("Profile editing feature coming soon!");
+        }
+
+        function changePassword() {
+            let newPassword = document.getElementById("new-password").value;
+            if (newPassword.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+            alert("Password updated successfully!");
+        }
+
+        function saveSettings() {
+            let notificationsEnabled = document.getElementById("notifications").checked;
+            let language = document.getElementById("language").value;
+            
+            alert("Settings saved! Notifications: " + (notificationsEnabled ? "On" : "Off") + ", Language: " + language);
+        }
+    </script>
+
+</body>
+</html>
