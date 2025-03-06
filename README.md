@@ -1,2 +1,2 @@
 # BINARY404
-LINK TO LIVE SITE="https://tizan.netlify.app/"
+LINK TO LIVE SITE=(https://tizanhome.netlify.app)
