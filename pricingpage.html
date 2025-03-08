@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Tizan</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .pricing-table th {
+            background-color: #ff7f50;
+            color: white;
+        }
+        .conditions, .formula, .calculator {
+            margin-top: 30px;
+            padding: 15px;
+            background: #ffe4e1;
+            border-left: 5px solid #ff7f50;
+        }
+        .calculator {
+            background: #e0f7fa;
+            border-left: 5px solid #00acc1;
+        }
+        .calculator input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .calculator button {
+            background: #ff7f50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .calculator button:hover {
+            background: #e7663c;
+        }
+        .back-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-home a {
+            display: inline-block;
+            background: #ff7f50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .back-home a:hover {
+            background: #e7663c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pricing Details</h2>
+        <p>Our pricing is calculated based on distance, weight, and type of goods being transported. Below is a breakdown of how we determine costs:</p>
+        
+        <table class="pricing-table">
+            <tr>
+                <th>Distance</th>
+                <th>Weight</th>
+                <th>Price Estimate</th>
+            </tr>
+            <tr>
+                <td>0 - 10 km</td>
+                <td>Up to 5 kg</td>
+                <td>₹375</td>
+            </tr>
+            <tr>
+                <td>10 - 50 km</td>
+                <td>5 - 20 kg</td>
+                <td>₹1125</td>
+            </tr>
+            <tr>
+                <td>50+ km</td>
+                <td>20 - 50 kg</td>
+                <td>₹2250+</td>
+            </tr>
+        </table>
+
+        <div class="formula">
+            <h3>Pricing Formula:</h3>
+            <p>Total Price = Base Fare + (Rate per km × Distance) + (Weight Factor × Weight)</p>
+            <h4>Explanation of Each Component:</h4>
+            <ul>
+                <li><strong>Base Fare (₹200)</strong> → A fixed charge applied to every booking.</li>
+                <li><strong>Rate per km (₹10/km)</strong> → Charges applied based on the total distance between pickup and drop locations.</li>
+                <li><strong>Weight Factor (₹2/kg)</strong> → Additional charge based on the weight of the goods being transported.</li>
+            </ul>
+        </div>
+
+        <div class="calculator">
+            <h3>Price Calculator</h3>
+            <form id="price-calculator-form">
+                <label for="distance">Distance (km):</label>
+                <input type="number" id="distance" name="distance" required>
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+                <button type="button" onclick="calculatePrice()">Calculate Price</button>
+            </form>
+            <p id="price-result"></p>
+        </div>
+
+        <div class="conditions">
+            <h3>Important Conditions:</h3>
+            <ul>
+                <li>Prices may vary based on additional services requested.</li>
+                <li>Heavy and oversized items may have extra charges.</li>
+                <li>We do NOT recommend transporting extremely expensive, fragile, or perishable items.</li>
+                <li>Tizan is not liable for damages due to improper packaging.</li>
+            </ul>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html">Back to Home</a>
+        </div>
+    </div>
+    <script>
+        function calculatePrice() {
+            const baseFare = 200;
+            const ratePerKm = 10;
+            const weightFactor = 2;
+
+            const distance = document.getElementById('distance').value;
+            const weight = document.getElementById('weight').value;
+
+            const totalPrice = baseFare + (ratePerKm * distance) + (weightFactor * weight);
+
+            document.getElementById('price-result').innerText = `Estimated Total Price: ₹${totalPrice}`;
+        }
+    </script>
+</body>
+</html>
